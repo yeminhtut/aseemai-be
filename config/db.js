@@ -9,7 +9,7 @@ const config = {
       name: 'aseemai-api',
     },
     port: 27017,
-    db: 'mongodb://localhost/aseemai-api',
+    db: 'mongodb://localhost/aseemai',
     saltWorkFactor: 10,
     maxLoginAttempts: 5,
     lockTime: 2 * 60 * 60 * 1000,
@@ -22,10 +22,10 @@ const config = {
   production: {
     root: rootPath,
     app: {
-      name: 'iaseemai-api',
+      name: 'aseemai-api',
     },
     port: 27017,
-    db: 'mongodb://localhost/aseemai-api',
+    db: 'mongodb://localhost/aseemai',
     saltWorkFactor: 10,
     maxLoginAttempts: 5,
     lockTime: 2 * 60 * 60 * 1000,

@@ -9,8 +9,7 @@ const CONFIG = require('../../config/db');
 
 let UserSchema = new Schema({
   name: {
-    type: String,
-    required: true,
+    type: String
   },
   email: {
     type: String,
@@ -24,54 +23,11 @@ let UserSchema = new Schema({
     },
     required: [true, 'User email required'],
   },
-  password: {
-    type: String,
-    required: false,
-  },
-  departmentId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Departments',
-    required: false,
-  },
   role: {
     type: String,
-    enum: ['ADMIN', 'OFFICER', 'STAFF'],
-    default: 'STAFF',
   },
   status: {
     type: String,
-    enum: ['ACTIVE', 'INACTIVE', 'ARCHIVE'],
-    default: 'INACTIVE',
-  },
-  resetPasswordToken: String,
-  resetPasswordExpires: Date,
-  passwordExpireTime: {
-    type: Number,
-    default: null,
-  },
-  loginAttempts: {
-    type: Number,
-    default: 0,
-  },
-  lockUntil: {
-    type: Number,
-  },
-  createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Users',
-    default: null,
-  },
-  updatedBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Users',
-  },
-  lastLoginTime: {
-    type: Date,
-    default: null,
-  },
-  lastPasswordUpdatedAt: {
-    type: Date,
-    default: null,
   },
   createdAt: {
     type: Date,
@@ -141,8 +97,6 @@ UserSchema.methods.incLoginAttempts = function(cb) {
   }
   // otherwise we're incrementing
   var updates = { $inc: { loginAttempts: 1 } };
-
-  console.log('updates', updates);
 
   // lock the account if we've reached max attempts and it's not locked already
   if (this.loginAttempts + 1 >= CONFIG.maxLoginAttempts && !this.isLocked) {

@@ -20,9 +20,8 @@ exports.listAllUsers = async (req, res) => {
 };
 
 exports.createNewUser = async (req, res) => {
-  let { email, password } = req.body;
+  let { email } = req.body;
   const newUser = new User(req.body);
-  newUser.createdBy = req.credentials.userId;
   try {
     const result = await newUser.save();
     res.json(result);
