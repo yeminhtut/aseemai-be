@@ -13,7 +13,7 @@ let UserSchema = new Schema({
   },
   email: {
     type: String,
-    unique: true,
+    //unique: true,
     lowercase: true,
     trim: true,
     validate: {
@@ -26,7 +26,16 @@ let UserSchema = new Schema({
   role: {
     type: String,
   },
-  status: {
+  linkedUrl: {
+    type: String,
+  },
+  githubUrl: {
+    type: String,
+  },
+  rate: {
+    type: String,
+  },
+  about: {
     type: String,
   },
   createdAt: {
