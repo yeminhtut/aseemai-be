@@ -38,6 +38,9 @@ let UserSchema = new Schema({
   about: {
     type: String,
   },
+  skills: {
+    type: Array
+  },
   createdAt: {
     type: Date,
     default: Date.now,
