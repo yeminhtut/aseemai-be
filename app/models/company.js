@@ -7,7 +7,7 @@ const bcrypt = require("bcryptjs");
 const validator = require("validator");
 const CONFIG = require("../../config/db");
 
-let UserSchema = new Schema({
+let CompanySchema = new Schema({
     name: {
         type: String,
     },
@@ -23,25 +23,25 @@ let UserSchema = new Schema({
         required: [true, "User email required"],
     },
     password: {
-      type: String,
-      required: false,
+        type: String,
+        required: false,
+      },
+    companyName: {
+        type: String,
     },
     role: {
         type: String,
     },
-    linkedUrl: {
+    phNumber: {
         type: String,
     },
-    githubUrl: {
+    requiredRole: {
         type: String,
     },
-    rate: {
+    duration: {
         type: String,
     },
-    about: {
-        type: String,
-    },
-    skills: {
+    requiredSkills: {
         type: Array,
     },
     createdAt: {
@@ -54,13 +54,13 @@ let UserSchema = new Schema({
     },
 });
 
-const reasons = (UserSchema.statics.failedLogin = {
+const reasons = (CompanySchema.statics.failedLogin = {
     NOT_FOUND: 0,
     PASSWORD_INCORRECT: 1,
     MAX_ATTEMPTS: 2,
 });
 
-UserSchema.pre("save", function (next) {
+CompanySchema.pre("save", function (next) {
     let user = this;
     if (!user.isModified("password")) {
         return next();
@@ -81,7 +81,7 @@ UserSchema.pre("save", function (next) {
     });
 });
 
-UserSchema.methods.generateHashedPassword = function (password) {
+CompanySchema.methods.generateHashedPassword = function (password) {
     return new Promise((resolve, reject) => {
         return bcrypt.genSalt(CONFIG.db.saltWorkFactor, function (err, salt) {
             if (err) reject(false);
@@ -94,12 +94,11 @@ UserSchema.methods.generateHashedPassword = function (password) {
     });
 };
 
-UserSchema.methods.generateHash = function (data) {
+CompanySchema.methods.generateHash = function (data) {
     return bcrypt.hashSync(data, bcrypt.genSaltSync(8), null);
 };
 
-UserSchema.methods.incLoginAttempts = function (cb) {
-    console.log("LOCK", this.lockUntil, this.lockUntil, Date.now());
+CompanySchema.methods.incLoginAttempts = function (cb) {
     // if we have a previous lock that has expired, restart at 1
     if (this.lockUntil && this.lockUntil < Date.now()) {
         return this.update(
@@ -120,7 +119,7 @@ UserSchema.methods.incLoginAttempts = function (cb) {
     return this.update(updates, cb);
 };
 
-UserSchema.methods.comparePassword = function (candidatePassword, cb) {
+CompanySchema.methods.comparePassword = function (candidatePassword, cb) {
     let user = this;
     bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
         if (err) return cb(err);
@@ -146,4 +145,4 @@ UserSchema.methods.comparePassword = function (candidatePassword, cb) {
     });
 };
 
-module.exports = mongoose.model("Users", UserSchema);
+module.exports = mongoose.model("Companies", CompanySchema);
